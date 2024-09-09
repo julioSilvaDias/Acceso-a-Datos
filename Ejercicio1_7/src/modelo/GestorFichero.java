@@ -80,7 +80,7 @@ public class GestorFichero {
 
 	public void escribirMensajes(ArrayList<Mensaje> mensajes) {
 		try {
-			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(RUTA, true));
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(RUTA));
 
 			for (Mensaje mensaje : mensajes) {
 				bufferedWriter.write("fecha: " + mensaje.fecha);

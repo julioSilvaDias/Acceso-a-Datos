@@ -60,6 +60,7 @@ public class Panel1 {
 			public void actionPerformed(ActionEvent e) {
 				paneles.get(0).setVisible(true);
 				paneles.get(1).setVisible(false);
+				paneles.get(2).setVisible(false);
 			}
 		});
 	}

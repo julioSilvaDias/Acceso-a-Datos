@@ -57,6 +57,12 @@ public class Ejercicio1_7 {
 		paneles.add(panel2);
 		frame.getContentPane().add(panel2);
 		
+		Panel2 panelAnaidir = new Panel2(paneles);
+		JPanel panel3 = panelAnaidir.getPanel();
+		panel3.setVisible(false);
+		
+		paneles.add(panel3);
+		frame.getContentPane().add(panel3);
 		
 	}
 

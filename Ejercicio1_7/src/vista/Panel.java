@@ -72,7 +72,24 @@ public class Panel {
 			public void actionPerformed(ActionEvent e) {
 				paneles.get(0).setVisible(false);
 				paneles.get(1).setVisible(true);
+				paneles.get(2).setVisible(false);
 				
+			}
+		});
+		
+		btn_Salir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				frame.dispose();
+			}
+		});
+		
+		btn_anaidirMensajes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				paneles.get(0).setVisible(false);
+				paneles.get(1).setVisible(false);
+				paneles.get(2).setVisible(true);
 			}
 		});
 	}
