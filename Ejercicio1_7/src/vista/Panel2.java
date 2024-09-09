@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import modelo.Sesion;
 import pojo.Mensaje;
@@ -41,21 +43,8 @@ public class Panel2 {
 
 		JComboBox desplegableMes = new JComboBox();
 		desplegableMes.setModel(new DefaultComboBoxModel(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo",
-				"Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Deciembre" }));
+				"Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
 		desplegableMes.setSelectedIndex(11);
-		desplegableMes.addItem("Enero");
-		desplegableMes.addItem("Febrero");
-		desplegableMes.addItem("Marzo");
-		desplegableMes.addItem("Abril");
-		desplegableMes.addItem("Mayo");
-		desplegableMes.addItem("Junio");
-		desplegableMes.addItem("Julio");
-		desplegableMes.addItem("Agosto");
-		desplegableMes.addItem("Septiembre");
-		desplegableMes.addItem("Octubre");
-		desplegableMes.addItem("Noviembre");
-		desplegableMes.addItem("Deciembre");
-
 		desplegableMes.setBounds(160, 66, 123, 22);
 		panel.add(desplegableMes);
 
@@ -139,7 +128,46 @@ public class Panel2 {
 
 		JButton btnOk = new JButton("OK");
 		btnOk.setBounds(400, 332, 69, 23);
+		btnOk.setEnabled(false);
 		panel.add(btnOk);
+		
+		/*DocumentListener que llama un metodo que comprueba
+		 * si hay texto en los textFIelds
+		 */
+		DocumentListener listener = new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				verificarCajasTexto();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				verificarCajasTexto();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				verificarCajasTexto();
+			}
+
+			/*
+			 * este metodo comprueba si todos los text fields estan rellenos
+			 * y cambia la variable datosObligatorios para habilitar el boton ok
+			 */
+			private void verificarCajasTexto() {
+				boolean datosObligatorios = !txtDia.getText().trim().isEmpty() && !txtDe.getText().trim().isEmpty()
+						&& !txtPara.getText().trim().isEmpty() && !txtAsunto.getText().trim().isEmpty()
+						&& !txtContenido.getText().trim().isEmpty();
+
+				btnOk.setEnabled(datosObligatorios);
+			}
+		};
+		
+		/*
+		 * aqui asignamos el listener a los textFields
+		 */
+		txtDia.getDocument().addDocumentListener(listener);
+		txtDe.getDocument().addDocumentListener(listener);
+		txtPara.getDocument().addDocumentListener(listener);
+		txtAsunto.getDocument().addDocumentListener(listener);
+		txtContenido.getDocument().addDocumentListener(listener);
 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -151,7 +179,6 @@ public class Panel2 {
 
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				Mensaje mensaje = new Mensaje();
 				String txt = null;
 
@@ -191,7 +218,6 @@ public class Panel2 {
 				paneles.get(0).setVisible(true);
 				paneles.get(1).setVisible(false);
 				paneles.get(2).setVisible(false);
-
 			}
 		});
 	}

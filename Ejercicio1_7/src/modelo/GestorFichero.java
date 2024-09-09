@@ -19,7 +19,6 @@ public class GestorFichero {
 	public ArrayList<Mensaje> cargarMensajes() {
 		ArrayList<Mensaje> ret = new ArrayList<Mensaje>();
 		try {
-
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(RUTA));
 			String fecha = null;
 			String hora = null;
@@ -50,27 +49,50 @@ public class GestorFichero {
 					contenido = null;
 
 				} else {
-					if (linea.startsWith("fecha:")) {
-						fecha = linea;
-					} else if (linea.startsWith("hora:")) {
-						hora = linea;
-					} else if (linea.startsWith("para:")) {
-						para = linea;
-					} else if (linea.startsWith("de:")) {
-						de = linea;
-					} else if (linea.startsWith("asunto:")) {
-						asunto = linea;
-					} else if (linea.startsWith("contenido:")) {
-						contenido = linea;
+					/*
+					 * aqui ademas de asignar valores a las variables, tabien se quita los prefijos
+					 * de lectura que viene antes del dato que nos interesa, como por ejemplp
+					 * fecha:, hora:, de:, etc. Al seperar la linea en dos partes, asignamos 
+					 * el prefijo a la posicion 0 de un array y el dato a la parte 1, luego se ultiliza
+					 * la parte 0 como clave para un switch case
+					 */
+					String[] partes = linea.split(":", 2);
 
+					if (partes.length == 2) {
+						String clave = partes[0].trim();
+						String valor = partes[1].trim();
+
+						switch (clave.toLowerCase()) {
+						case "fecha":
+							fecha = valor;
+							System.out.println("Fecha: " + fecha);
+							break;
+						case "hora":
+							hora = valor;
+							System.out.println("Hora: " + hora);
+							break;
+						case "para":
+							para = valor;
+							System.out.println("Para: " + para);
+							break;
+						case "de":
+							de = valor;
+							System.out.println("De: " + de);
+							break;
+						case "asunto":
+							asunto = valor;
+							System.out.println("Asunto: " + asunto);
+							break;
+						case "contenido":
+							contenido = valor;
+							System.out.println("Contenido: " + contenido);
+							break;
+						}
 					}
-
 				}
-
 			}
 		} catch (FileNotFoundException fn) {
 			System.out.println("Archivo no encontrado");
-
 		} catch (IOException ioe) {
 			System.out.println("ERROR DE E/S");
 		}
@@ -100,7 +122,7 @@ public class GestorFichero {
 
 			}
 			bufferedWriter.close();
-			
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
