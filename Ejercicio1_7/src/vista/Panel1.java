@@ -11,6 +11,8 @@ import modelo.Sesion;
 import pojo.Mensaje;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -45,17 +47,26 @@ public class Panel1 {
 
 		btn_Imprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mensajes = Sesion.getInstance().getMensajes();
-				for (Mensaje mensaje : mensajes) {
-					Object[] fila = { mensaje.getDe(), mensaje.getPara(), mensaje.getFecha(), mensaje.getHora(),
-							mensaje.getAsunto(), mensaje.getContenido() };
+				try {
+					mensajes = Sesion.getInstance().getMensajes();
+					for (Mensaje mensaje : mensajes) {
+						Object[] fila = { mensaje.getDe(), mensaje.getPara(), mensaje.getFecha(), mensaje.getHora(),
+								mensaje.getAsunto(), mensaje.getContenido() };
 
-					modeloTabla.addRow(fila);
+						modeloTabla.addRow(fila);
 
+					}
+				} catch (Exception exp) {
+					JOptionPane.showMessageDialog(null, "No hay mensajes cargados en memoria",
+							"ERROR", JOptionPane.ERROR_MESSAGE);
+					
+					paneles.get(0).setVisible(true);
+					paneles.get(1).setVisible(false);
+					paneles.get(2).setVisible(false);
 				}
 			}
 		});
-		
+
 		btn_menu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paneles.get(0).setVisible(true);

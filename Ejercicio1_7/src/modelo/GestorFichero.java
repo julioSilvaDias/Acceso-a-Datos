@@ -14,10 +14,18 @@ import pojo.Mensaje;
 
 public class GestorFichero {
 
-	private static final String RUTA = "c:\\Trastero\\mensajes.txt";
+	private static final String RUTA = "c:\\Trastero\\Mensajes.txt";
 
 	public ArrayList<Mensaje> cargarMensajes() {
-		ArrayList<Mensaje> ret = new ArrayList<Mensaje>();
+		ArrayList<Mensaje> ret = null;
+
+		if (Sesion.getInstance().getMensajes() != null) {
+			ret = Sesion.getInstance().getMensajes();
+
+		} else {
+			ret = new ArrayList<Mensaje>();
+		}
+
 		try {
 			BufferedReader bufferedReader = new BufferedReader(new FileReader(RUTA));
 			String fecha = null;
@@ -52,8 +60,8 @@ public class GestorFichero {
 					/*
 					 * aqui ademas de asignar valores a las variables, tabien se quita los prefijos
 					 * de lectura que viene antes del dato que nos interesa, como por ejemplp
-					 * fecha:, hora:, de:, etc. Al seperar la linea en dos partes, asignamos 
-					 * el prefijo a la posicion 0 de un array y el dato a la parte 1, luego se ultiliza
+					 * fecha:, hora:, de:, etc. Al seperar la linea en dos partes, asignamos el
+					 * prefijo a la posicion 0 de un array y el dato a la parte 1, luego se ultiliza
 					 * la parte 0 como clave para un switch case
 					 */
 					String[] partes = linea.split(":", 2);
@@ -65,27 +73,21 @@ public class GestorFichero {
 						switch (clave.toLowerCase()) {
 						case "fecha":
 							fecha = valor;
-							System.out.println("Fecha: " + fecha);
 							break;
 						case "hora":
 							hora = valor;
-							System.out.println("Hora: " + hora);
 							break;
 						case "para":
 							para = valor;
-							System.out.println("Para: " + para);
 							break;
 						case "de":
 							de = valor;
-							System.out.println("De: " + de);
 							break;
 						case "asunto":
 							asunto = valor;
-							System.out.println("Asunto: " + asunto);
 							break;
 						case "contenido":
 							contenido = valor;
-							System.out.println("Contenido: " + contenido);
 							break;
 						}
 					}

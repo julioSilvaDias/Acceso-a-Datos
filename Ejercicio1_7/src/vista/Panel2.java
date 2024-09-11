@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -130,9 +132,10 @@ public class Panel2 {
 		btnOk.setBounds(400, 332, 69, 23);
 		btnOk.setEnabled(false);
 		panel.add(btnOk);
-		
-		/*DocumentListener que llama un metodo que comprueba
-		 * si hay texto en los textFIelds
+
+		/*
+		 * DocumentListener que llama un metodo que comprueba si hay texto en los
+		 * textFIelds
 		 */
 		DocumentListener listener = new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -148,8 +151,8 @@ public class Panel2 {
 			}
 
 			/*
-			 * este metodo comprueba si todos los text fields estan rellenos
-			 * y cambia la variable datosObligatorios para habilitar el boton ok
+			 * este metodo comprueba si todos los text fields estan rellenos y cambia la
+			 * variable datosObligatorios para habilitar el boton ok
 			 */
 			private void verificarCajasTexto() {
 				boolean datosObligatorios = !txtDia.getText().trim().isEmpty() && !txtDe.getText().trim().isEmpty()
@@ -159,7 +162,7 @@ public class Panel2 {
 				btnOk.setEnabled(datosObligatorios);
 			}
 		};
-		
+
 		/*
 		 * aqui asignamos el listener a los textFields
 		 */
@@ -181,6 +184,7 @@ public class Panel2 {
 			public void actionPerformed(ActionEvent e) {
 				Mensaje mensaje = new Mensaje();
 				String txt = null;
+				ArrayList<Mensaje> mensajes = null;
 
 				txt = txtDia.getText() + "/" + desplegableMes.getSelectedItem() + "/"
 						+ desplegableAnio.getSelectedItem();
@@ -211,9 +215,19 @@ public class Panel2 {
 				txtContenido.setText("");
 				mensaje.setContenido(txt);
 
-				ArrayList<Mensaje> mensajes = Sesion.getInstance().getMensajes();
+				if (Sesion.getInstance().getMensajes() != null) {
+					mensajes = Sesion.getInstance().getMensajes();
+					
+				} else {
+					mensajes = new ArrayList<Mensaje>();
+					
+				}
+
 				mensajes.add(mensaje);
 				Sesion.getInstance().setMensajes(mensajes);
+				
+				JOptionPane.showMessageDialog(null, "Mensaje añadido con exito",
+						"AVISO", JOptionPane.INFORMATION_MESSAGE);
 
 				paneles.get(0).setVisible(true);
 				paneles.get(1).setVisible(false);
