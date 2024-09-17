@@ -1,20 +1,28 @@
 package modelo;
 
-import java.io.File;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import pojo.Partido;
 
 public class GestorPartido {
-	private static final String RUTA = "Resultados.dat";
+	private static final String RUTA = "C:/trastero/Resultados.dat";
 
 	public ArrayList<Partido> CargarFicPartidos() {
 		ArrayList<Partido> ret = null;
 
+		if (null == Sesion.getInstance().getPartidos()) {
+			ret = new ArrayList<Partido>();
+		} else {
+			ret = Sesion.getInstance().getPartidos();
+		}
+
 		try {
-			File fichero = new File(RUTA);
-			FileInputStream fic = new FileInputStream(fichero);
+			DataInputStream fic = new DataInputStream(new FileInputStream(RUTA));
+
 			String equipoLocal = null;
 			String equipoVisitante = null;
 			int golesLocal = 0;
@@ -22,13 +30,42 @@ public class GestorPartido {
 			String lugar = null;
 			String fecha = null;
 
-			String linea;
-			int i;
+			while (fic.available() > 0) {
+				String linea = fic.readUTF().trim();
+				String[] partes = linea.split(":", 2);
 
-			while ((i = fic.read()) != -1) {
-				linea = Character.toString((char) +i);
+				if (partes.length == 2) {
+					String clave = partes[0].trim().toLowerCase();
+					String valor = partes[1].trim();
 
-				if (linea.contains("******************")) {
+					switch (clave) {
+					case "equipo local":
+						equipoLocal = valor;
+						break;
+
+					case "equipo visitante":
+						equipoVisitante = valor;
+						break;
+
+					case "goles local":
+						golesLocal = Integer.parseInt(valor);
+						break;
+
+					case "goles visitante":
+						golesVisitante = Integer.parseInt(valor);
+						break;
+
+					case "lugar":
+						lugar = valor;
+						break;
+
+					case "fecha":
+						fecha = valor;
+						break;
+					}
+				}
+
+				if (linea.contains("***************************")) {
 					Partido partido = new Partido();
 					partido.setEquipoLocal(equipoLocal);
 					partido.setEquipoVisitante(equipoVisitante);
@@ -45,51 +82,42 @@ public class GestorPartido {
 					golesVisitante = 0;
 					lugar = null;
 					fecha = null;
-
-				} else {
-
-					String[] partes = linea.split(":", 2);
-
-					if (partes.length == 2) {
-						String clave = partes[0].trim();
-						String valor = partes[1].trim();
-
-						switch (clave.toLowerCase()) {
-						case "equipo Local":
-							equipoLocal = valor;
-							break;
-
-						case "equipo visitante":
-							equipoVisitante = valor;
-							break;
-
-						case "goles local":
-							golesLocal = Integer.parseInt(valor);
-							break;
-
-						case "goles visitante":
-							golesVisitante = Integer.parseInt(valor);
-							break;
-
-						case "lugar":
-							lugar = valor;
-							break;
-
-						case "fecha":
-							fecha = valor;
-							break;
-
-						}
-					}
-
 				}
 			}
+
+			fic.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return ret;
+	}
+
+	public void guardarPartidos(ArrayList<Partido> partidos) {
+		try {
+			DataOutputStream fic = new DataOutputStream(new FileOutputStream(RUTA));
+			String numGoles = null;
+
+			for (Partido partido : partidos) {
+				fic.writeUTF("Equipo local: " + partido.getEquipoLocal());
+				fic.writeUTF("Equipo visitante: " + partido.getEquipoVisitante());
+				numGoles = "Goles local: " + partido.getGolLocal();
+				fic.writeUTF(numGoles);
+				numGoles = null;
+				numGoles = "Goles visitante: " + partido.getGolVisitante();
+				fic.writeUTF(numGoles);
+				numGoles=null;
+				fic.writeUTF("Lugar: " + partido.getLugar());
+				fic.writeUTF("fecha: " + partido.getFecha());
+				fic.writeUTF("***************************");
+			}
+
+			fic.close();
+		} catch (Exception e) {
+			e.getStackTrace();
+			
+		}
 	}
 
 }
