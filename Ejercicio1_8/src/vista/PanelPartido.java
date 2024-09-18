@@ -20,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -143,6 +145,7 @@ public class PanelPartido extends JFrame {
 		textLoc.getDocument().addDocumentListener(crearDocumentListener());
 		textGolesLoc.getDocument().addDocumentListener(crearDocumentListener());
 		textGolesVis.getDocument().addDocumentListener(crearDocumentListener());
+		TextFec.getDocument().addDocumentListener(crearDocumentListener());
 
 		btnAnaidir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -188,16 +191,8 @@ public class PanelPartido extends JFrame {
 		btnCargar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				partidos = gestorPartido.CargarFicPartidos();
-				modelo.setRowCount(0);
 
-				for (Partido partido : partidos) {
-					Object[] fila = { partido.getEquipoLocal(), partido.getEquipoVisitante(), partido.getGolLocal(),
-							partido.getGolVisitante(), partido.getLugar(), partido.getFecha() };
-
-					modelo.addRow(fila);
-				}
-
-				JOptionPane.showMessageDialog(null, "Se han cargado los partidos", "AVISO",
+				JOptionPane.showMessageDialog(null, "Se han cargado los partidos correctamente", "AVISO",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -206,7 +201,7 @@ public class PanelPartido extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				gestorPartido.guardarPartidos(partidos);
 
-				JOptionPane.showMessageDialog(null, "Se han guardado los partidos", "AVISO",
+				JOptionPane.showMessageDialog(null, "Se han guardado los partidos correctamente", "AVISO",
 						JOptionPane.INFORMATION_MESSAGE);
 
 			}
@@ -217,9 +212,24 @@ public class PanelPartido extends JFrame {
 		boolean habilitar = textEquipoLoc.getText().length() >= 1 && textEquipoLoc.getText().length() <= 20
 				&& textEquipoVis.getText().length() >= 1 && textEquipoVis.getText().length() <= 20
 				&& textLoc.getText().length() >= 1 && textLoc.getText().length() <= 20
-				&& validarGoles(textGolesLoc.getText()) && validarGoles(textGolesVis.getText());
+				&& validarGoles(textGolesLoc.getText()) && validarGoles(textGolesVis.getText())&& validarFecha(TextFec.getText());
 
 		btnAnaidir.setEnabled(habilitar);
+	}
+	
+	private boolean validarFecha(String text) {
+		if (text.matches("\\d{2}/\\d{2}/\\d{2}")) {
+			try {
+				SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
+				simpleFormat.setLenient(false);  
+				simpleFormat.parse(text);      
+				return true;          
+			} catch (ParseException e) {
+				return false;         
+			}
+		} else {
+			return false;
+		}
 	}
 
 	private boolean validarGoles(String text) {

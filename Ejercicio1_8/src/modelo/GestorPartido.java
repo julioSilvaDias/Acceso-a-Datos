@@ -100,16 +100,16 @@ public class GestorPartido {
 			String numGoles = null;
 
 			for (Partido partido : partidos) {
-				fic.writeUTF("Equipo local: " + partido.getEquipoLocal());
-				fic.writeUTF("Equipo visitante: " + partido.getEquipoVisitante());
+				fic.writeUTF("\n" +"Equipo local: " + partido.getEquipoLocal()+"\n");
+				fic.writeUTF("Equipo visitante: " + partido.getEquipoVisitante()+"\n");
 				numGoles = "Goles local: " + partido.getGolLocal();
-				fic.writeUTF(numGoles);
+				fic.writeUTF(numGoles + "\n");
 				numGoles = null;
 				numGoles = "Goles visitante: " + partido.getGolVisitante();
-				fic.writeUTF(numGoles);
+				fic.writeUTF(numGoles + "\n");
 				numGoles=null;
-				fic.writeUTF("Lugar: " + partido.getLugar());
-				fic.writeUTF("fecha: " + partido.getFecha());
+				fic.writeUTF("Lugar: " + partido.getLugar() + "\n");
+				fic.writeUTF("fecha: " + partido.getFecha() + "\n");
 				fic.writeUTF("***************************");
 			}
 
