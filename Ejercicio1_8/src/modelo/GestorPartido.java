@@ -21,7 +21,8 @@ public class GestorPartido {
 		}
 
 		try {
-			DataInputStream fic = new DataInputStream(new FileInputStream(RUTA));
+			FileInputStream fichero = new FileInputStream(RUTA);
+			DataInputStream fic = new DataInputStream(fichero);
 
 			String equipoLocal = null;
 			String equipoVisitante = null;
@@ -30,7 +31,7 @@ public class GestorPartido {
 			String lugar = null;
 			String fecha = null;
 
-			while (fic.available() > 0) {
+			while (fichero.getChannel().position() < fichero.getChannel().size()) {
 				String linea = fic.readUTF().trim();
 				String[] partes = linea.split(":", 2);
 
@@ -100,14 +101,14 @@ public class GestorPartido {
 			String numGoles = null;
 
 			for (Partido partido : partidos) {
-				fic.writeUTF("\n" +"Equipo local: " + partido.getEquipoLocal()+"\n");
-				fic.writeUTF("Equipo visitante: " + partido.getEquipoVisitante()+"\n");
+				fic.writeUTF("\n" + "Equipo local: " + partido.getEquipoLocal() + "\n");
+				fic.writeUTF("Equipo visitante: " + partido.getEquipoVisitante() + "\n");
 				numGoles = "Goles local: " + partido.getGolLocal();
 				fic.writeUTF(numGoles + "\n");
 				numGoles = null;
 				numGoles = "Goles visitante: " + partido.getGolVisitante();
 				fic.writeUTF(numGoles + "\n");
-				numGoles=null;
+				numGoles = null;
 				fic.writeUTF("Lugar: " + partido.getLugar() + "\n");
 				fic.writeUTF("fecha: " + partido.getFecha() + "\n");
 				fic.writeUTF("***************************");
@@ -116,7 +117,7 @@ public class GestorPartido {
 			fic.close();
 		} catch (Exception e) {
 			e.getStackTrace();
-			
+
 		}
 	}
 
