@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<coches>
+    <cochesUtilitarios compania="Hyundai">
+        <nombreCoche tipo="4X4">Tucson</nombreCoche>
+        <nombreCoche tipo="normal">Coupe</nombreCoche>
+    </cochesUtilitarios>
+</coches>
