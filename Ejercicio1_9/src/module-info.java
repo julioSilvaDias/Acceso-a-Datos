@@ -4,6 +4,6 @@
 /**
  * 
  */
-module Ejercicio1_9 {
+module Ejercicio1_9n {
 	requires java.xml;
 }
